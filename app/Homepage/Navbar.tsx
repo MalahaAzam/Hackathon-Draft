@@ -1,5 +1,6 @@
 import Link from "next/link"
 import Image from "next/image"
+
 export default function Navbar(){
     return(
         <main className=" flex justify-around 
@@ -22,9 +23,13 @@ export default function Navbar(){
             <div className="flex 
             lg:gap-2
             md:gap-1 md:w-6 lg:w-6">
-                <Image src="/Vector.png" alt="vector" width={16} height={11} />
-                <Image src="/Cart.png" alt="Cart1" width={32} height={32}/> 
-                <Image src="/Useravatar.png" alt="Wishlist" width={32} height={32} />
+
+                <Image src="/Vector.png" alt="vector" width={305} height={375}/>
+                
+                <Image src="/Cart.png" alt="Cart1" width={305} height={375}/> 
+              
+                <Image src="/Useravatar.png" alt="Wishlist" width={305} height={375} />
+            
             </div>
         </main>
     )

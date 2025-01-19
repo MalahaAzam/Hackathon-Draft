@@ -1,11 +1,10 @@
-import Emailsignup from "./Components/emailsignup";
-import Features from "./Components/features";
-import Herosection from "./Components/herosection";
-import Landingpage from "./Components/landingpage";
-import Listing from "./Components/listing";
-import Listings from "./Components/listings";
-import Productlisting from "./Routes/ProductListing/page";
-import Shoppingcart from "./Routes/ShoppingCart/page";
+import Emailsignup from "./Homepage/emailsignup";
+import Features from "./Homepage/features";
+import Herosection from "./Homepage/herosection";
+import Landingpage from "./Homepage/landingpage";
+import Listing from "./Homepage/listing";
+import Listings from "./Homepage/listings";
+import ProductCards from "./products/page";
 
 
 export default function Home (){
@@ -19,13 +18,11 @@ export default function Home (){
       <br />
       <Listing/>
       <br />
-      <Landingpage/>
-      <br />
       <Emailsignup/>
       <br />
-      <Productlisting/>
+      <Landingpage/>
       <br />
-      <Shoppingcart/>
+      <ProductCards/>
     </main>
   )
   

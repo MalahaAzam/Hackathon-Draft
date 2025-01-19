@@ -5,7 +5,7 @@ import Link from 'next/link';
 const Footer: React.FC = () => {
   return (
     <footer className="bg-[#2A254B] px-20 text-white py-8">
-      <div className="container mx-auto flex flex-col lg:flex-row lg:justify-between lg:items-center">
+      <div className="container items-center mx-auto flex flex-col lg:flex-row lg:justify-between lg:items-center mt-5">
 
         <div className="lg:w-1/4 mb-6">
           <h3 className="text-lg font-semibold mb-4">Menu</h3>
@@ -31,7 +31,7 @@ const Footer: React.FC = () => {
           </ul>
         </div>
 
-        <div className="lg:w-1/4 mb-6">
+        <div className="lg:w-1/4 mb-6 ">
           <h3 className="text-lg font-semibold mb-4">Our Company</h3>
           <ul className='space-y-4'>
             <li><Link href="#" className="text-gray-400 hover:text-white">About us</Link></li>

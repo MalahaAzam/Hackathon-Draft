@@ -5,7 +5,7 @@ export default function Productlisting(){
     return(
         <main>
 
-        <div className="flex flex-col md:flex-row">
+        <div className="flex flex-col md:flex-row"> 
             <div className="w-full md:w-1/2">
                 <Image src="/DandyChair.png" alt="Dandy Chair" width={1440} height={1440} className="w-full h-auto md:w-[768px] md:h-[579px] lg:h-[787px]" />
             </div>

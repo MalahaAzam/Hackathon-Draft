@@ -15,7 +15,7 @@ export default function Herosection(){
 
             </div>
              <div className="hidden md:block ">
-             <Image src="/dandyceramics.png" alt="avion" width={520} height={780} className="md:h-[584px]"></Image>
+             <Image src="/DandyCera.png" alt="avion" width={520} height={780} className="md:h-[584px]"></Image>
              </div>
 
 
