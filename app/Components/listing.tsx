@@ -1,4 +1,5 @@
 import Image from "next/image"
+import Link from "node_modules/next/link"
 export default function Listing(){
     return(
         <main className="px-8">
@@ -32,7 +33,9 @@ export default function Listing(){
                 </div>
             </div>
             <div className="text-center p-6 md:p-12">
-            <button className=" font-light text-sm bg-slate-700 rounded bg-opacity-15 py-2 px-3 lg:py-4 lg:px-6 ">View collection</button>
+            <Link href = "/products">
+                <button className=" font-light text-sm bg-slate-700 rounded bg-opacity-15 py-2 px-3 lg:py-4 lg:px-6 ">View Collection</button>
+            </Link>
             </div>
 
         </main>
