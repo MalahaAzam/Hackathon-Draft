@@ -24,8 +24,11 @@ interface Product {
   tags: string[];
 }
 
+export const dynamic = 'force-dynamic';
+
 const ProductsPage: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
   const router = useRouter();
   const categoryParam = searchParams.get("category");
@@ -55,13 +58,15 @@ const ProductsPage: React.FC = () => {
           image_url: product.image.asset.url,
         }));
         setProducts(formattedData);
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching products:", error);
+        setLoading(false);
       }
     };
 
     fetchProducts();
-  }, []);
+  }, [categoryParam]);
 
   useEffect(() => {
     setSelectedCategory(categoryParam);
@@ -71,16 +76,36 @@ const ProductsPage: React.FC = () => {
     ? products.filter((p) => p.tags.includes(selectedCategory))
     : products;
 
-  const uniqueCategories = Array.from(new Set(products.flatMap((p) => p.tags)));
+  const staticCategories = [
+    "Ceramics",
+    "Chairs",
+    "Crockery",
+    "Cutlery",
+    "Plant Pots",
+    "Tables",
+    "Tableware"
+  ];
+
+  const dynamicCategories = Array.from(new Set(products.flatMap((p) => p.tags)));
+
+  // Merge static and dynamic categories, avoiding duplicates
+  const uniqueCategories = Array.from(new Set([...staticCategories, ...dynamicCategories]));
 
   const handleCategoryClick = (category: string | null) => {
-    setSelectedCategory(category);
     if (category) {
       router.push(`/products?category=${encodeURIComponent(category)}`);
     } else {
       router.push(`/products`);
     }
   };
+
+  if (loading) {
+    return (
+      <div className="p-4 text-center text-lg text-slate-700">
+        Loading products...
+      </div>
+    );
+  }
 
   return (
     <div className="p-4">
