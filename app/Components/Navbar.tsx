@@ -1,36 +1,61 @@
-import Link from "next/link"
-import Image from "next/image"
+"use client";
 
-export default function Navbar(){
-    return(
-        <main className=" flex justify-around 
-        md:pt-8 md:pl-12 md:pr-12 md:text-base
-        lg:pt-12 lg:pl-24 lg:pr-20 lg:text-xl border-b-2 pb-4">
-            <div className="md:w-14 lg:w-20 md:pt-1">
-                <Image src="/Avion.png" alt="exclusive" width={118} height={24} />
-            </div>
-            <div className="flex text-[#2A254B]
-            md:gap-4 md:text-sm
-            lg:gap-8  lg:text-base">
-                <p><Link href= "#" >Plant pots</Link></p>
-                <p><Link href= "#">Ceramics</Link></p>
-                <p><Link href= "#">Tables</Link></p>
-                <p><Link href= "#">Chairs</Link></p>
-                <p><Link href= "#">Crockery</Link></p>
-                <p><Link href= "#">Tableware</Link></p>
-                <p><Link href= "#">Cutlery</Link></p>
-            </div>
-            <div className="flex 
-            lg:gap-2
-            md:gap-1 md:w-6 lg:w-6">
+import React, { useEffect, useState } from 'react';
+import { createClient } from '@sanity/client';
+import Link from 'next/link';
+import Image from 'next/image';
 
-                <Image src="/Vector.png" alt="vector" width={305} height={375}/>
-                
-                <Image src="/Cart.png" alt="Cart1" width={305} height={375}/> 
-              
-                <Image src="/Useravatar.png" alt="Wishlist" width={305} height={375} />
-            
-            </div>
-        </main>
-    )
-}
+const sanity = createClient({
+    projectId: 'whi5midb',
+    dataset: 'production',
+    apiVersion: '2025-01-17',
+    useCdn: true,
+});
+
+const Navbar = () => {
+    interface Category {
+        _id: string;
+        name: string;
+        slug: { current: string };
+    }
+
+    const [categories, setCategories] = useState<Category[]>([]);
+
+    useEffect(() => {
+        const fetchCategories = async () => {
+            try {
+                const query = `*[_type == "category"] {
+                    _id,
+                    name,
+                    slug
+                }`;
+                const data = await sanity.fetch(query);
+                setCategories(data);
+            } catch (error) {
+                console.error("Error fetching categories:", error);
+            }
+        };
+
+        fetchCategories();
+    }, []);
+
+    return (
+        <nav className="bg-white pt-10 p-4 md:px-20 px-4 flex justify-between items-center">
+            <Image src="/Avion.png" alt="Avion Logo" width={80} height={80} className="md:mr-6" />
+            <ul className="flex gap-8 overflow-x-auto whitespace-nowrap">
+                <li className="inline-block"><Link href="/" className="text-black">Home</Link></li>
+                <li className="inline-block"><Link href="/products" className="text-black">Products</Link></li>
+                <li className="inline-block"><Link href="/cart" className="text-black">Cart</Link></li>
+                {categories.map((category) => (
+                    <li key={category._id} className="inline-block">
+                        <Link href={`/products?category=${encodeURIComponent(category.name)}`} className="text-black">
+                            {category.name}
+                        </Link>
+                    </li>
+                ))}
+            </ul>
+        </nav>
+    );
+};
+
+export default Navbar;

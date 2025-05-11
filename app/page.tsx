@@ -1,17 +1,21 @@
-import Emailsignup from "./Components/emailsignup";
-import Features from "./Components/features";
-import Herosection from "./Components/herosection";
-import Landingpage from "./Components/landingpage";
-import Listing from "./Components/listing";
-import Listings from "./Components/listings";
-import HomePage from "./Components/page";
-import ProductCards from "./products/page";
 
 
-export default function Home (){
+"use client";
+
+import Herosection from "./Routes/herosection/page"
+import Features from "../app/Components/features"
+import Listing from "./Routes/productlistone/page"
+import Emailsignup from "../app/Components/emailsignup"
+import HomeProductPreview from "../app/Components/HomeProductPreview"
+
+export default function HomePage (){
   return (
     <main>
-      <HomePage/>
+      <Herosection />
+      <Features />
+      <Listing />
+      <Emailsignup />
+      <HomeProductPreview />
     </main>
   )
   

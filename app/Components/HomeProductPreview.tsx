@@ -5,7 +5,6 @@ import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "context/cartcontext";
 import { createClient } from "@sanity/client";
-import { useSearchParams, useRouter } from "next/navigation";
 
 const sanity = createClient({
   projectId: "whi5midb",
@@ -24,12 +23,8 @@ interface Product {
   tags: string[];
 }
 
-const ProductsPage: React.FC = () => {
+export default function HomeProductPreview() {
   const [products, setProducts] = useState<Product[]>([]);
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const categoryParam = searchParams.get("category");
-  const [selectedCategory, setSelectedCategory] = useState<string | null>(categoryParam);
   const { addToCart } = useCart();
 
   useEffect(() => {
@@ -47,7 +42,7 @@ const ProductsPage: React.FC = () => {
             }
           },
           tags
-        }`;
+        }[0...4]`; // limit to 4 products
         const data = await sanity.fetch(query);
         const formattedData = data.map((product: any) => ({
           ...product,
@@ -63,55 +58,12 @@ const ProductsPage: React.FC = () => {
     fetchProducts();
   }, []);
 
-  useEffect(() => {
-    setSelectedCategory(categoryParam);
-  }, [categoryParam]);
-
-  const filteredProducts = selectedCategory
-    ? products.filter((p) => p.tags.includes(selectedCategory))
-    : products;
-
-  const uniqueCategories = Array.from(new Set(products.flatMap((p) => p.tags)));
-
-  const handleCategoryClick = (category: string | null) => {
-    setSelectedCategory(category);
-    if (category) {
-      router.push(`/products?category=${encodeURIComponent(category)}`);
-    } else {
-      router.push(`/products`);
-    }
-  };
-
   return (
-    <div className="p-4">
-      <h2 className="text-3xl font-semibold text-center text-slate-800 mb-6">Product Collection</h2>
-
-      {/* Category Buttons */}
-      <div className="flex flex-wrap gap-2 justify-center mb-6">
-        <button
-          onClick={() => handleCategoryClick(null)}
-          className={`px-4 py-2 rounded-full ${!selectedCategory ? "bg-blue-600 text-white" : "bg-gray-300"}`}
-        >
-          All
-        </button>
-        {uniqueCategories.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => handleCategoryClick(cat)}
-            className={`px-4 py-2 rounded-full ${selectedCategory === cat ? "bg-blue-600 text-white" : "bg-gray-300"}`}
-          >
-            {cat}
-          </button>
-        ))}
-      </div>
-
-      {/* Products Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {filteredProducts.map((product) => (
-          <div
-            key={product.id}
-            className="bg-white p-4 rounded-lg shadow-md flex flex-col"
-          >
+    <main className="p-4">
+      <h2 className="text-3xl font-semibold text-center text-slate-800 mb-6">Featured Products</h2>
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+        {products.map((product) => (
+          <div key={product.id} className="bg-white p-4 rounded-lg shadow-md flex flex-col">
             <Link href={`/DynamicProducts/${product.id}`}>
               <Image
                 src={product.image_url}
@@ -121,17 +73,14 @@ const ProductsPage: React.FC = () => {
                 className="w-full h-48 object-cover rounded-md"
               />
             </Link>
-
             <h3 className="text-lg font-semibold mt-4">{product.title}</h3>
             <p className="text-slate-600">{product.description.slice(0, 100)}...</p>
-
             <div className="flex justify-between items-center mt-4">
               <p className="text-lg font-bold text-slate-800">£{product.price}</p>
               {product.discountPercentage > 0 && (
                 <p className="text-sm text-green-600">{product.discountPercentage}% OFF</p>
               )}
             </div>
-
             <div className="flex flex-wrap gap-2 mt-2">
               {product.tags.map((tag, index) => (
                 <span key={index} className="text-xs bg-slate-400 text-black rounded-full px-2 py-1">
@@ -139,7 +88,6 @@ const ProductsPage: React.FC = () => {
                 </span>
               ))}
             </div>
-
             <button
               onClick={() => addToCart(product)}
               className="bg-blue-600 text-white px-4 py-2 mt-4 rounded-md hover:bg-blue-700"
@@ -149,8 +97,13 @@ const ProductsPage: React.FC = () => {
           </div>
         ))}
       </div>
-    </div>
+      <div className="text-center mt-6">
+        <Link href="/products">
+          <button className="font-light text-sm bg-slate-700 rounded bg-opacity-15 py-2 px-3 lg:py-4 lg:px-6">
+            Explore More Products
+          </button>
+        </Link>
+      </div>
+    </main>
   );
-};
-
-export default ProductsPage;
+}
