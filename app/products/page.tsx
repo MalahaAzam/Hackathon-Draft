@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Suspense } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "context/cartcontext";
@@ -14,19 +14,7 @@ const sanity = createClient({
   useCdn: true,
 });
 
-interface Product {
-  id: string;
-  title: string;
-  price: number;
-  description: string;
-  discountPercentage: number;
-  image_url: string;
-  tags: string[];
-}
-
-export const dynamic = 'force-dynamic';
-
-const ProductsPage: React.FC = () => {
+const ProductsContent: React.FC = () => {
   const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const searchParams = useSearchParams();
@@ -88,7 +76,6 @@ const ProductsPage: React.FC = () => {
 
   const dynamicCategories = Array.from(new Set(products.flatMap((p) => p.tags)));
 
-  // Merge static and dynamic categories, avoiding duplicates
   const uniqueCategories = Array.from(new Set([...staticCategories, ...dynamicCategories]));
 
   const handleCategoryClick = (category: string | null) => {
@@ -111,7 +98,6 @@ const ProductsPage: React.FC = () => {
     <div className="p-4">
       <h2 className="text-3xl font-semibold text-center text-slate-800 mb-6">Product Collection</h2>
 
-      {/* Category Buttons */}
       <div className="flex flex-wrap gap-2 justify-center mb-6">
         <button
           onClick={() => handleCategoryClick(null)}
@@ -130,7 +116,6 @@ const ProductsPage: React.FC = () => {
         ))}
       </div>
 
-      {/* Products Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
         {filteredProducts.map((product) => (
           <div
@@ -175,6 +160,14 @@ const ProductsPage: React.FC = () => {
         ))}
       </div>
     </div>
+  );
+};
+
+const ProductsPage: React.FC = () => {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ProductsContent />
+    </Suspense>
   );
 };
 
