@@ -9,8 +9,8 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { Product } from "lib/types";
 
 const sanity = createClient({
-  projectId: "whi5midb",
-  dataset: "production",
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || "whi5midb",
+  dataset: process.env.NEXT_PUBLIC_SANITY_DATASET || "production",
   apiVersion: "2025-01-17",
   useCdn: true,
 });
