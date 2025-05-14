@@ -1,5 +1,3 @@
-
-
 "use client";
 
 import Herosection from "./Routes/herosection/page"
