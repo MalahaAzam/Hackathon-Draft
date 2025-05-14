@@ -29,10 +29,9 @@ const ProductsContent: React.FC = () => {
       try {
         const query = `*[_type == "product"] {
           _id,
-          title,
+          name,
           price,
           description,
-          discountPercentage,
           image {
             asset -> {
               url
@@ -44,6 +43,7 @@ const ProductsContent: React.FC = () => {
         const formattedData = data.map((product: any) => ({
           ...product,
           id: product._id,
+          title: product.name,
           image_url: product.image.asset.url,
         }));
         setProducts(formattedData);
@@ -138,9 +138,7 @@ const ProductsContent: React.FC = () => {
 
             <div className="flex justify-between items-center mt-4">
               <p className="text-lg font-bold text-slate-800">£{product.price}</p>
-              {product.discountPercentage > 0 && (
-                <p className="text-sm text-green-600">{product.discountPercentage}% OFF</p>
-              )}
+              {/* Removed discountPercentage display as it is not in schema */}
             </div>
 
             <div className="flex flex-wrap gap-2 mt-2">
