@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useCart } from "context/cartcontext";
 import { createClient } from "@sanity/client";
 import { useSearchParams, useRouter } from "next/navigation";
+import { Product } from "lib/types";
 
 const sanity = createClient({
   projectId: "whi5midb",
